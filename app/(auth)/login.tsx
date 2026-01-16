@@ -42,7 +42,7 @@ export default function LoginScreen() {
       <View style={styles.content}>
         <View style={styles.header}>
           <MaterialCommunityIcons name="scale-bathroom" size={80} color="#4CAF50" />
-          <Text variant="headlineLarge" style={styles.title}>WeightLog</Text>
+          <Text variant="headlineLarge" style={styles.title}>LogMyWeight</Text>
           <Text variant="bodyLarge" style={styles.subtitle}>
             Track your weight privately in your own Google Sheet
           </Text>

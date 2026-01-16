@@ -1,49 +1,47 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
-import * as fs from 'fs';
-import * as path from 'path';
 
-const GOOGLE_SERVICES_JSON_PATH = path.join(__dirname, 'google-services.json');
 
-// Check if the environment variable is set
-if (process.env.GOOGLE_SERVICES_JSON) {
-    try {
-        // Write the content to google-services.json
-        // We assume the environment variable contains the raw JSON string
-        fs.writeFileSync(GOOGLE_SERVICES_JSON_PATH, process.env.GOOGLE_SERVICES_JSON);
-        console.log(`Successfully generated ${GOOGLE_SERVICES_JSON_PATH} from environment variable.`);
-    } catch (error) {
-        console.error('Error writing google-services.json from environment variable:', error);
-    }
+const APP_ENV = process.env.APP_ENV;
+let AndroidGoogleServicesFile: string | undefined;
+
+if (APP_ENV === "development") {
+    AndroidGoogleServicesFile = process.env.GOOGLE_SERVICES_JSON_DEV;
+} else if (APP_ENV === "preview") {
+    AndroidGoogleServicesFile = process.env.GOOGLE_SERVICES_JSON;
+} else if (APP_ENV === "testing") {
+    AndroidGoogleServicesFile = process.env.GOOGLE_SERVICES_JSON;
+} else {
+    AndroidGoogleServicesFile = process.env.GOOGLE_SERVICES_JSON || "./google-services.json";
 }
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
     ...config,
-    name: "WeightLog",
-    slug: "weightlog",
+    name: "LogMyWeight",
+    slug: "logmyweight",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "automatic",
-    scheme: "weightlog",
+    scheme: "logmyweight",
     // @ts-ignore: newArchEnabled is a valid property but might not be in the type definition yet
     newArchEnabled: true,
     splash: {
         image: "./assets/splash-icon.png",
         resizeMode: "contain",
-        backgroundColor: "#4CAF50"
+        backgroundColor: "#ffffff"
     },
     ios: {
         supportsTablet: true,
-        bundleIdentifier: "com.weightlog.app"
+        bundleIdentifier: "com.logmyweight.app"
     },
     android: {
         adaptiveIcon: {
             foregroundImage: "./assets/adaptive-icon.png",
-            backgroundColor: "#4CAF50"
+            backgroundColor: "#ffffff"
         },
-        package: "com.weightlog.app",
+        package: "com.logmyweight.app",
         edgeToEdgeEnabled: true,
-        googleServicesFile: "./google-services.json"
+        googleServicesFile: AndroidGoogleServicesFile
     },
     web: {
         favicon: "./assets/favicon.png",
@@ -62,8 +60,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     extra: {
         router: {},
-        eas: {
-            projectId: "06c3a595-d258-4c18-acf0-d1dc88ce056e"
+        "eas": {
+            "projectId": "ddebf348-5226-41fd-b679-347d00fdbf0c"
         }
     },
     owner: "vndpal"

@@ -20,9 +20,9 @@ interface AuthStore {
   loadStoredAuth: () => Promise<void>;
 }
 
-const ACCESS_TOKEN_KEY = 'weightlog_access_token';
-const REFRESH_TOKEN_KEY = 'weightlog_refresh_token';
-const USER_KEY = 'weightlog_user';
+const ACCESS_TOKEN_KEY = 'logmyweight_access_token';
+const REFRESH_TOKEN_KEY = 'logmyweight_refresh_token';
+const USER_KEY = 'logmyweight_user';
 
 export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticated: false,
@@ -59,7 +59,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
       const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
       const userJson = await SecureStore.getItemAsync(USER_KEY);
-      
+
       if (accessToken && refreshToken) {
         const user = userJson ? JSON.parse(userJson) : null;
         set({

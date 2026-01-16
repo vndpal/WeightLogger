@@ -11,7 +11,7 @@ export function lbsToKg(lbs: number): number {
 }
 
 export function formatWeight(kg: number, unit: WeightUnit): string {
-  const value = unit === 'lbs' ? kgToLbs(kg) : kg;
+  const value = convertFromKg(kg, unit);
   return value.toFixed(2) + ' ' + unit;
 }
 

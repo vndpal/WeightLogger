@@ -73,7 +73,7 @@ export default function SettingsScreen() {
     }
     setIsValidating(true);
     try {
-      const newSheetId = await sheetsService.createSheet(accessToken, 'WeightLog');
+      const newSheetId = await sheetsService.createSheet(accessToken, 'LogMyWeight');
       setSheetId(newSheetId);
       setSheetUrl('https://docs.google.com/spreadsheets/d/' + newSheetId);
       Alert.alert('Success', 'New Google Sheet created!');

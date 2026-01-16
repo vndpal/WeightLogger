@@ -2,13 +2,13 @@ import { GoogleAuthConfig } from './types';
 
 export const GOOGLE_CONFIG: GoogleAuthConfig = {
   // For Expo Go development and web
-  webClientId: '926117358204-1f7k36j4q12cobck6j18rg1uq169edds.apps.googleusercontent.com',
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
 
   // For standalone Android builds
-  androidClientId: '926117358204-egoqqukbg5nihm2ob14k9h92spqpjtfc.apps.googleusercontent.com',
+  androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
 
   // For standalone iOS builds
-  iosClientId: '926117358204-1f7k36j4q12cobck6j18rg1uq169edds.apps.googleusercontent.com',
+  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
 };
 
 export const GOOGLE_SCOPES = [

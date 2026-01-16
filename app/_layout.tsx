@@ -53,7 +53,7 @@ export default function RootLayout() {
                 headerTitleStyle: {
                   fontWeight: 'bold',
                 },
-                title: 'WeightLog',
+                title: 'LogMyWeight',
               }}
             />
           </Stack>

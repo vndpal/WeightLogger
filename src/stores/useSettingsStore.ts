@@ -24,7 +24,7 @@ export const useSettingsStore = create<SettingsStore>()(
       reset: () => set(DEFAULT_SETTINGS),
     }),
     {
-      name: 'weightlog-settings',
+      name: 'logmyweight-settings',
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

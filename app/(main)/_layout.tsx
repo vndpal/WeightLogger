@@ -27,10 +27,10 @@ export default function MainLayout() {
       if (!sheetId && accessToken) {
         try {
           console.log('No sheet connected, creating one...');
-          const newSheetId = await sheetsService.createSheet(accessToken, 'WeightLog');
+          const newSheetId = await sheetsService.createSheet(accessToken, 'LogMyWeight');
           setSheetId(newSheetId);
           console.log('New sheet created and connected:', newSheetId);
-          Alert.alert('Google Sheet Connected', 'A new Google Sheet "WeightLog" has been created and connected to store your data.');
+          Alert.alert('Google Sheet Connected', 'A new Google Sheet "LogMyWeight" has been created and connected to store your data.');
         } catch (error) {
           console.error('Failed to auto-create sheet:', error);
         }
