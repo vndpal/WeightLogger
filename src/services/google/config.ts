@@ -1,8 +1,9 @@
 import { GoogleAuthConfig } from './types';
+import Constants from 'expo-constants';
 
 export const GOOGLE_CONFIG: GoogleAuthConfig = {
-  // For Expo Go development and web
-  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  // For Expo Go development and web - using Constants.expoConfig.extra for reliable runtime access
+  webClientId: Constants.expoConfig?.extra?.googleWebClientId,
 
   // For standalone Android builds
   androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,

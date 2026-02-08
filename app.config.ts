@@ -53,13 +53,24 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "expo-secure-store",
         "@react-native-google-signin/google-signin",
         "@react-native-community/datetimepicker",
-        "expo-font"
+        "expo-font",
+        "@react-native-firebase/app",
+        "@react-native-firebase/crashlytics",
+        [
+            "expo-build-properties",
+            {
+                "ios": {
+                    "useFrameworks": "static"
+                }
+            }
+        ]
     ],
     experiments: {
         typedRoutes: true
     },
     extra: {
         router: {},
+        googleWebClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || "529320967514-o72b1j724gqgc3dj9o0ntd4c51rbka10.apps.googleusercontent.com",
         "eas": {
             "projectId": "ddebf348-5226-41fd-b679-347d00fdbf0c"
         }
