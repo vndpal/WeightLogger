@@ -6,13 +6,14 @@ import { useNavigation, useSegments } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useWeightStore, useSettingsStore, useAuthStore } from '../../src/stores';
 import { sheetsService } from '../../src/services/google';
+import { pullFromSheets } from '../../src/services/sync';
 import { MaterialTopTabs } from '../../components/MaterialTopTabs';
 
 export default function MainLayout() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const loadEntries = useWeightStore((state) => state.loadEntries);
-  const { sheetId, setSheetId } = useSettingsStore();
+  const { sheetId, sheetName, setSheetId } = useSettingsStore();
   const { accessToken } = useAuthStore();
 
   const navigation = useNavigation();
@@ -21,6 +22,21 @@ export default function MainLayout() {
   useEffect(() => {
     loadEntries();
   }, []);
+
+  useEffect(() => {
+    const syncFromSheets = async () => {
+      if (!accessToken || !sheetId) return;
+
+      try {
+        await pullFromSheets(accessToken, sheetId, sheetName);
+        await loadEntries();
+      } catch (error) {
+        console.error('Failed to pull latest sheet data:', error);
+      }
+    };
+
+    syncFromSheets();
+  }, [accessToken, sheetId, sheetName, loadEntries]);
 
   useEffect(() => {
     const checkAndCreateSheet = async () => {
