@@ -94,6 +94,17 @@ export const weightRepository = {
     );
   },
 
+  async updateFromSheets(id: string, weight: number, rowIndex: number): Promise<void> {
+    const db = await getDatabase();
+    const now = Date.now();
+    await db.runAsync(
+      `UPDATE weight_entries
+       SET weight = ?, updated_at = ?, sync_status = 'synced', sheets_row_index = ?
+       WHERE id = ?`,
+      [weight, now, rowIndex, id]
+    );
+  },
+
   async delete(id: string): Promise<void> {
     const db = await getDatabase();
     await db.runAsync('DELETE FROM weight_entries WHERE id = ?', [id]);

@@ -69,6 +69,18 @@ export async function pullFromSheets(
       const entry = await weightRepository.create(date, row.weight);
       // Since it's from sheets, mark as synced
       await weightRepository.markSynced(entry.id, row.rowIndex || 0);
+      continue;
+    }
+
+    const rowIndex = row.rowIndex || existing.sheetsRowIndex || 0;
+
+    // Don't overwrite local pending changes.
+    if (existing.syncStatus === 'pending') {
+      continue;
+    }
+
+    if (existing.weight !== row.weight || existing.sheetsRowIndex !== rowIndex) {
+      await weightRepository.updateFromSheets(existing.id, row.weight, rowIndex);
     }
   }
 }
