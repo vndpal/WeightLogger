@@ -1,6 +1,11 @@
+import { formatDateForSpreadsheet, normalizeSheetDateToStorage } from '../../utils';
 import { SheetRow, SheetAppendResult } from './types';
 
 const SHEETS_API_BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+function buildFormattedDateFormula(): string {
+  return '=TEXT(INDIRECT("A"&ROW()), "ddd, dd-mmm")';
+}
 
 export const sheetsService = {
   async createSheet(accessToken: string, title: string): Promise<string> {
@@ -47,6 +52,8 @@ export const sheetsService = {
     const range = sheetName + '!A:C';
     const url = SHEETS_API_BASE + '/' + sheetId + '/values/' + encodeURIComponent(range) + ':append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS';
 
+    const spreadsheetDate = formatDateForSpreadsheet(new Date(row.date));
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -54,7 +61,7 @@ export const sheetsService = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        values: [[row.date, row.formattedDate, row.weight]],
+        values: [[spreadsheetDate, buildFormattedDateFormula(), row.weight]],
       }),
     });
 
@@ -92,7 +99,7 @@ export const sheetsService = {
     const values = data.values || [];
 
     return values.map((row: string[], index: number) => ({
-      date: row[0] || '',
+      date: normalizeSheetDateToStorage(row[0] || ''),
       formattedDate: row[1] || '',
       weight: parseFloat(row[2]) || 0,
       rowIndex: index + 2, // Data starts at row 2
@@ -109,6 +116,8 @@ export const sheetsService = {
     const range = sheetName + '!A' + rowIndex + ':C' + rowIndex;
     const url = SHEETS_API_BASE + '/' + sheetId + '/values/' + encodeURIComponent(range) + '?valueInputOption=USER_ENTERED';
 
+    const spreadsheetDate = formatDateForSpreadsheet(new Date(row.date));
+
     const response = await fetch(url, {
       method: 'PUT',
       headers: {
@@ -116,7 +125,7 @@ export const sheetsService = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        values: [[row.date, row.formattedDate, row.weight]],
+        values: [[spreadsheetDate, buildFormattedDateFormula(), row.weight]],
       }),
     });
 

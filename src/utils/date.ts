@@ -1,7 +1,28 @@
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks, subMonths } from 'date-fns';
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks, subMonths, parse, isValid } from 'date-fns';
 
 export function formatDateForSheet(date: Date): string {
   return format(date, 'yyyy-MM-dd');
+}
+
+export function formatDateForSpreadsheet(date: Date): string {
+  return format(date, 'MM/dd/yyyy');
+}
+
+export function normalizeSheetDateToStorage(dateValue: string): string {
+  if (!dateValue) return '';
+
+  const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
+  if (isoPattern.test(dateValue)) {
+    return dateValue;
+  }
+
+  const parsedUsDate = parse(dateValue, 'M/d/yyyy', new Date());
+  if (isValid(parsedUsDate)) {
+    return formatDateForSheet(parsedUsDate);
+  }
+
+  const fallback = new Date(dateValue);
+  return isValid(fallback) ? formatDateForSheet(fallback) : '';
 }
 
 export function formatDateDisplay(date: Date): string {
